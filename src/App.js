@@ -11,7 +11,8 @@ const style = {
   form: `flex justify-between`,
   input: `border p-2 w-full text-xl`,
   button:`border p-4 ml-2  bg-blue-500 text-slate-100 rounded-md`,
-  count:`text-center p-2`
+  count:`text-center p-2`,
+  popup:``
 
 }
 
@@ -72,7 +73,7 @@ function App() {
         </form>
         <ul>
           {todos.map((todo,index)=> (
-            <Todo key={index} todo={todo} toggleComplete= {toggleComplete} deleteTodo={deleteTodo}/>
+            <Todo key={index} todo={todo} toggleComplete= {toggleComplete} deleteTodo={deleteTodo} />
           
           ))}
           
