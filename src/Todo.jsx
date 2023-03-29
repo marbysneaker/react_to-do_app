@@ -12,7 +12,7 @@ const style = {
 
 }
 
-const Todo = ({todo, toggleComplete, deleteTodo}) => {
+const Todo = ({todo, toggleComplete, deleteTodo, handleEdit, getIdHandler}) => {
     return (
        <li className={todo.completed ? style.liComplete : style.li}>
         <div className={style.row}>
@@ -20,7 +20,7 @@ const Todo = ({todo, toggleComplete, deleteTodo}) => {
             <p onClick={()=> toggleComplete(todo)} className={todo.completed ? style.textComplete : style.text}>{todo.text}</p>
 
         </div>
-       <button className={style.button1}>{<FaUserEdit/>}</button>
+       <button className={style.button1} onClick={()=>getIdHandler(todo.id)}>{<FaUserEdit/>}</button>
        <button className={style.button} onClick={()=>deleteTodo(todo.id)}>{<FaRegTrashAlt/>}</button>
 
        </li>

@@ -20,6 +20,12 @@ function App() {
 
   const [todos, setTodos] = useState([]);
   const [input, setInput] = useState('');
+  const [editId, setEditId] = useState("");
+
+  const getIdHandler = (id) => {
+    console.log("the id of document to be edited: ", id)
+    setEditId(id);
+  }
 
   //create todo
   const createTodo = async (e) => {
@@ -58,6 +64,10 @@ function App() {
       
   }
 
+  // const handleEdit = async (id) => {
+  //   const editTask = 
+  // }
+
   //delete
   const deleteTodo = async (id) => {
     await deleteDoc(doc(db, 'todos', id))
@@ -73,7 +83,7 @@ function App() {
         </form>
         <ul>
           {todos.map((todo,index)=> (
-            <Todo key={index} todo={todo} toggleComplete= {toggleComplete} deleteTodo={deleteTodo} />
+            <Todo key={index} todo={todo} toggleComplete= {toggleComplete} deleteTodo={deleteTodo}  getIdHandler={getIdHandler}/>
           
           ))}
           
