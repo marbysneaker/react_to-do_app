@@ -25,6 +25,7 @@ function App() {
   const getIdHandler = (id) => {
     console.log("the id of document to be edited: ", id)
     setEditId(id);
+    
   }
 
   //create todo
@@ -73,14 +74,23 @@ function App() {
     await deleteDoc(doc(db, 'todos', id))
   }
 
+  useEffect(() => {
+    if(editId !== undefined && editId !== ""){
+      // editHandler();
+    }
+  })
+
   return (
     <div className={style.bg}>
       <div className={style.container}>
         <h3 className={style.heading}>Todo App</h3>
+
         <form onSubmit={createTodo} className={style.form}>
           <input value={input} onChange={(e) => setInput(e.target.value)} className={style.input} type="text" placeholder="Add Todo" />
           <button className={style.button}><AiOutlinePlus size={30}/></button>
         </form>
+
+
         <ul>
           {todos.map((todo,index)=> (
             <Todo key={index} todo={todo} toggleComplete= {toggleComplete} deleteTodo={deleteTodo}  getIdHandler={getIdHandler}/>
@@ -89,6 +99,7 @@ function App() {
           
 
         </ul>
+
           {todos.length < 1 ? null :         <p className={style.count}>You have {todos.length} todo's</p>
 }
       </div>
