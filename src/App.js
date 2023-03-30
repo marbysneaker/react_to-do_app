@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import {AiOutlinePlus} from 'react-icons/ai'
 import { db } from "./firebase";
-import {query, collection, onSnapshot, updateDoc, doc, addDoc, deleteDoc} from 'firebase/firestore'
+import {query, collection, onSnapshot, updateDoc, doc, addDoc, deleteDoc, getFirestore, getDoc} from 'firebase/firestore'
 import Todo from './Todo';
 
 const style = {
@@ -21,24 +21,50 @@ function App() {
   const [todos, setTodos] = useState([]);
   const [input, setInput] = useState('');
   const [editId, setEditId] = useState("");
+  const [displayInput, setDisplayInput] = useState("");
 
-  const getIdHandler = (id) => {
+  const getIdHandler = async (id) => {
     console.log("the id of document to be edited: ", id)
     setEditId(id);
+    const datas = await getDoc(doc(db,'todos',id))
+    const display = datas.data()
+    
+    setInput(display.text)
     
   }
 
   //create todo
   const createTodo = async (e) => {
+
+    
     e.preventDefault(e)
-    if(input === ''){
-      alert('Please enter a valied todo')
-      return
+   
+
+    if(editId !== undefined && editId !== ''){
+      const updater = doc(db,'todos', editId)
+      updateDoc(updater,{
+        text:input,
+        completed: false
+      }).then(response => {
+        alert("updated")
+      }).catch(error => {
+        console.log(error.message)
+      })
     }
-    await addDoc(collection(db, 'todos'), {
-      text: input,
-      completed: false
-    })
+    else{
+
+      if(input === ''){
+        alert('Please enter a valied todo')
+        return
+      }
+      await addDoc(collection(db, 'todos'), {
+        text: input,
+        completed: false
+      })
+      
+    }
+    
+    setEditId('')
     setInput('')
 
 
@@ -54,6 +80,9 @@ function App() {
        });
        setTodos(todosArr)
     })
+    
+    
+    
     return () => unsubscribe()
   },[])
 
@@ -65,9 +94,10 @@ function App() {
       
   }
 
-  // const handleEdit = async (id) => {
-  //   const editTask = 
-  // }
+  const handleEdit = async () => {
+    
+    
+  }
 
   //delete
   const deleteTodo = async (id) => {
@@ -75,9 +105,12 @@ function App() {
   }
 
   useEffect(() => {
-    if(editId !== undefined && editId !== ""){
-      // editHandler();
-    }
+    // if(editId !== undefined && editId !== ""){
+    //   console.log("i got"+editId)
+    //   setInput(displayInput);
+    //   handleEdit();
+    // }
+    
   })
 
   return (
